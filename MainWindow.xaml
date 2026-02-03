@@ -1,0 +1,244 @@
+<Window x:Class="CollegeApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CollegeApp"
+        mc:Ignorable="d"
+        Title="Колледж: Управление учебным процессом" Height="800" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            <TabItem Header="Справочники">
+                <UniformGrid Columns="2">
+                    <GroupBox Header="Специальности">
+                        <DataGrid x:Name="dgSpecialties" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код" Binding="{Binding Code}"/>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Квалификация" Binding="{Binding Qualification}"/>
+                                <DataGridTextColumn Header="Срок (лет)" Binding="{Binding StudyDurationYear}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="Дисциплины">
+                        <DataGrid x:Name="dgDisciplines" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Шифр" Binding="{Binding Code}"/>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Часы" Binding="{Binding StandardHours}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="Аудитории">
+                        <DataGrid x:Name="dgClassrooms" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Номер" Binding="{Binding Number}"/>
+                                <DataGridTextColumn Header="Вместимость" Binding="{Binding Capacity}"/>
+                                <DataGridTextColumn Header="Тип" Binding="{Binding Type}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                    <GroupBox Header="Преподаватели">
+                        <DataGrid x:Name="dgTeachers" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
+                                <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
+                                <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </UniformGrid>
+            </TabItem>
+
+            <TabItem Header="Студенты">
+                <TabControl>
+                    <TabItem Header="Группы и Студенты">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Header="Группы" Grid.Row="0">
+                                <DataGrid x:Name="dgGroups" AutoGenerateColumns="False" CanUserAddRows="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                        <DataGridComboBoxColumn Header="Специальность" 
+                                                                SelectedValueBinding="{Binding SpecialtyID}" 
+                                                                SelectedValuePath="SpecialtyID" 
+                                                                DisplayMemberPath="Name"
+                                                                x:Name="colGroupSpecialty"/>
+                                        <DataGridTextColumn Header="Год поступления" Binding="{Binding YearOfAdmission}"/>
+                                        <DataGridTextColumn Header="Курс" Binding="{Binding CourseNumber}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                            <GroupBox Header="Студенты" Grid.Row="1">
+                                <DataGrid x:Name="dgStudents" AutoGenerateColumns="False" CanUserAddRows="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}"/>
+                                        <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}"/>
+                                        <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
+                                        <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate, StringFormat=d}"/>
+                                        <DataGridComboBoxColumn Header="Группа" x:Name="colStudentGroup" SelectedValueBinding="{Binding GroupID}" SelectedValuePath="GroupID" DisplayMemberPath="Name"/>
+                                        <DataGridTextColumn Header="Форма обучения" Binding="{Binding StudyForm}"/>
+                                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Успеваемость">
+                        <DataGrid x:Name="dgGrades" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Студент" 
+                                                        SelectedValueBinding="{Binding StudentID}" 
+                                                        SelectedValuePath="StudentID" 
+                                                        DisplayMemberPath="LastName"
+                                                        x:Name="colGradeStudent" Width="150"/>
+                                <DataGridTextColumn Header="Оценка" Binding="{Binding GradeValue}"/>
+                                <DataGridCheckBoxColumn Header="Присутствие" Binding="{Binding IsPresent}"/>
+                                <DataGridTextColumn Header="Комментарий" Binding="{Binding Comment}" Width="*"/>
+                                <DataGridComboBoxColumn Header="Занятие" 
+                                                        SelectedValueBinding="{Binding ScheduleID}" 
+                                                        SelectedValuePath="ScheduleID" 
+                                                        DisplayMemberPath="LessonDate"
+                                                        x:Name="colGradeSchedule" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="История движения">
+                        <DataGrid x:Name="dgHistory" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Студент" x:Name="colHistoryStudent"
+                                                        SelectedValueBinding="{Binding StudentID}"
+                                                        SelectedValuePath="StudentID"
+                                                        DisplayMemberPath="LastName" Width="150"/>
+                                <DataGridComboBoxColumn Header="Старая группа" x:Name="colHistoryOldGroup"
+                                                        SelectedValueBinding="{Binding OldGroupID}"
+                                                        SelectedValuePath="GroupID"
+                                                        DisplayMemberPath="Name" Width="100"/>
+                                <DataGridComboBoxColumn Header="Новая группа" x:Name="colHistoryNewGroup"
+                                                        SelectedValueBinding="{Binding NewGroupID}"
+                                                        SelectedValuePath="GroupID"
+                                                        DisplayMemberPath="Name" Width="100"/>
+                                <DataGridTextColumn Header="№ Приказа" Binding="{Binding OrderNumber}"/>
+                                <DataGridTextColumn Header="Дата приказа" Binding="{Binding OrderDate, StringFormat=d}"/>
+                                <DataGridTextColumn Header="Причина" Binding="{Binding Reason}" Width="*"/>
+                                <DataGridTextColumn Header="Тип" Binding="{Binding Type}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+
+            <TabItem Header="Расписание">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Margin="10">
+                        <WrapPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Дата:"/>
+                                <DatePicker x:Name="dpDate" Width="110"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Группа:"/>
+                                <ComboBox x:Name="cbGroup" Width="100" DisplayMemberPath="Name"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Дисциплина:"/>
+                                <ComboBox x:Name="cbDiscipline" Width="150" DisplayMemberPath="Name"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Преподаватель:"/>
+                                <ComboBox x:Name="cbTeacher" Width="150" DisplayMemberPath="LastName"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Аудитория:"/>
+                                <ComboBox x:Name="cbClassroom" Width="80" DisplayMemberPath="Number"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Начало:"/>
+                                <TextBox x:Name="txtStart" Width="50" Text="08:30"/>
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label Content="Конец:"/>
+                                <TextBox x:Name="txtEnd" Width="50" Text="10:00"/>
+                            </StackPanel>
+                        </WrapPanel>
+                        <Button Content="Добавить в расписание" Click="AddSchedule_Click" Width="200" HorizontalAlignment="Left" Margin="5"/>
+                    </StackPanel>
+                    <DataGrid x:Name="dgSchedule" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding LessonDate, StringFormat=d}"/>
+                            <DataGridTextColumn Header="Время" Binding="{Binding StartTime, StringFormat=\{0:hh\\:mm\}}"/>
+                            <DataGridTextColumn Header="Группа" Binding="{Binding StudyGroup.Name}"/>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}"/>
+                            <DataGridTextColumn Header="Преподаватель" Binding="{Binding Teacher.LastName}"/>
+                            <DataGridTextColumn Header="Аудитория" Binding="{Binding Classroom.Number}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Материальная база">
+                <TabControl>
+                    <TabItem Header="Оборудование">
+                        <DataGrid x:Name="dgEquipment" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Инв. номер" Binding="{Binding InventoryNumber}"/>
+                                <DataGridTextColumn Header="Состояние" Binding="{Binding Condition}"/>
+                                <DataGridComboBoxColumn Header="Аудитория" 
+                                                        SelectedValueBinding="{Binding ClassroomID}" 
+                                                        SelectedValuePath="ClassroomID" 
+                                                        DisplayMemberPath="Number"
+                                                        x:Name="colEquipmentClassroom"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Библиотека">
+                        <DataGrid x:Name="dgLibrary" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="200"/>
+                                <DataGridTextColumn Header="Автор" Binding="{Binding Author}" Width="150"/>
+                                <DataGridTextColumn Header="Год" Binding="{Binding PublicationYear}"/>
+                                <DataGridTextColumn Header="Всего" Binding="{Binding TotalQuantity}"/>
+                                <DataGridTextColumn Header="В наличии" Binding="{Binding AvailableQuantity}"/>
+                                <DataGridTextColumn Header="Тип" Binding="{Binding Type}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Выдача книг">
+                        <DataGrid x:Name="dgLoans" AutoGenerateColumns="False" CanUserAddRows="True">
+                            <DataGrid.Columns>
+                                <DataGridComboBoxColumn Header="Студент" x:Name="colLoanStudent"
+                                                        SelectedValueBinding="{Binding StudentID}"
+                                                        SelectedValuePath="StudentID"
+                                                        DisplayMemberPath="LastName" Width="150"/>
+                                <DataGridComboBoxColumn Header="Книга/Предмет" x:Name="colLoanItem"
+                                                        SelectedValueBinding="{Binding ItemID}"
+                                                        SelectedValuePath="ItemID"
+                                                        DisplayMemberPath="Title" Width="200"/>
+                                <DataGridTextColumn Header="Дата выдачи" Binding="{Binding IssueDate, StringFormat=d}"/>
+                                <DataGridTextColumn Header="Срок возврата" Binding="{Binding DeadlineDate, StringFormat=d}"/>
+                                <DataGridTextColumn Header="Дата возврата" Binding="{Binding ReturnDate, StringFormat=d}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+        </TabControl>
+
+        <Button Grid.Row="1" Content="СОХРАНИТЬ ВСЕ ИЗМЕНЕНИЯ" Click="Save_Click" Height="40" Margin="10" Background="LightGreen" FontWeight="Bold"/>
+    </Grid>
+</Window>
